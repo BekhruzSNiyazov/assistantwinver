@@ -118,7 +118,7 @@ while True:
             speak("Time over!")
 
         elif "what can you do" in text:
-            speak("I am an Assistant by Bekhruz Niyazov. I can translate English to Russian (Sth in Russian), set timers (set a timer), make notes (make a note, write this down or remember this) and I can count (10 + 10, 20 - 10, 2 * 2, 10 / 2)")
+            speak("I am an Assistant by Bekhruz Niyazov. I can translate English to Russian, set timers, make notes and I can count!")
 
         elif "make a note" in text or "write this down" in text or "remember this" in text:
             speak("What would you like to write down?")
