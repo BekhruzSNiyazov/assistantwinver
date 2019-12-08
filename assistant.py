@@ -1,4 +1,3 @@
-
 from os import remove
 from time import sleep
 from playsound import playsound
@@ -18,15 +17,18 @@ rujokes = ["- Запомни, умный человек всегда во всё
 lang = input("Print your language here (en/ru): ")
 
 def speak(text):
-    tts = gTTS(text=text, lang=lang)
-    filename = "voice.mp3"
-    tts.save(filename)
-    if lang == "ru":
-        print(f"\nАссистент: {text}\n")
-    else:
-        print(f"\nAssistant: {text}\n")
-    playsound(filename)
-    remove(filename)
+    try:
+        tts = gTTS(text=text, lang=lang)
+        filename = "voice.mp3"
+        tts.save(filename)
+        if lang == "ru":
+            print(f"\nАссистент: {text}\n")
+        else:
+            print(f"\nAssistant: {text}\n")
+        playsound(filename)
+        remove(filename)
+    except:
+        print("error")
 
 def get_audio():
     r = sr.Recognizer()
