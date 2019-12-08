@@ -5,17 +5,18 @@ import speech_recognition as sr
 from gtts import gTTS
 from subprocess import Popen
 from datetime import datetime
+from googletrans import Translator
 from random import randrange
 
 jokes = ["Why did the hipster burn his mouth on his coffee? Because he drank it before it was cool.", "What is the difference between a well-dressed man on a unicycle and a poorly dressed man on a bicycle? Attire."]
 
 def speak(text):
     tts = gTTS(text=text, lang="en")
-    file = "voice.mp3"
-    tts.save(file)
-    playsound(file)
+    filename = "voice.mp3"
+    tts.save(filename)
     print(f"\nAssistant: {text}\n")
-    remove(file)
+    playsound(filename)
+    remove(filename)
 
 def get_audio():
     r = sr.Recognizer()
@@ -44,8 +45,17 @@ while True:
 
     text = get_audio()
         
-    if "goodbye" in text:
-    	speak("Goodbye to you to! Say stop to stop.")
+    if "Russian" in text:
+        translator = Translator()
+        text = text.split()
+        text.remove("in")
+        text.remove("russian")
+        text = "".join(text)
+        translations = translator.translate(text, dest="ru")
+        print(translations.text)
+
+    elif "goodbye" in text:
+    	    speak("Goodbye to you to! Say stop to stop.")
 
     elif "stop" in text:
         break
@@ -61,6 +71,7 @@ while True:
     elif "how are you" in text:
         speak("I'm fine, thank you!")
 
+
     elif "random number generator" in text:
         i = randrange(100)
         speak(i)
@@ -70,8 +81,8 @@ while True:
         speak(f"{text[0]} + {text[-1]} = {text[0] + text[-1]}")
 
     elif "-" in text:
-        text = text.split()
-        speak(f"{text[0]} - {text[-1]} = {text[0] - text[-1]}")
+	    text = text.split()
+	    speak(f"{text[0]} - {text[-1]} = {text[0] - text[-1]}")
 
     elif "*" in text:
         text = text.split()
