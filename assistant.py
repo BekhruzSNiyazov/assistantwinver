@@ -18,7 +18,10 @@ lang = input("Print your language here (en/ru): ")
 def speak(text):
     tts = gTTS(text=text, lang=lang)
     filename = "voice.mp3"
-    tts.save(filename)
+    try:
+        tts.save(filename)
+    except:
+        print("faild to build the audio")
     if lang == "ru":
         print(f"\nАссистент: {text}\n")
     else:
