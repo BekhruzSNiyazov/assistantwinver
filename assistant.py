@@ -17,7 +17,10 @@ def speak(text):
     tts = gTTS(text=text, lang=lang)
     filename = "voice.mp3"
     tts.save(filename)
-    print(f"\nAssistant: {text}\n")
+    if lang == "ru":
+        print(f"\nАссистент: {text}\n")
+    else:
+        print(f"\nAssistant: {text}\n")
     playsound(filename)
     remove(filename)
 
@@ -29,9 +32,15 @@ def get_audio():
 
         try:
             said = r.recognize_google(audio, language=lang)
-            print(f"You: {said}")
-        except Exception as e:
-            print("Exception: " + str(e))
+            if lang == "ru":
+                print(f"Вы: {said}")
+            else:
+                print(f"You: {said}")
+        except:
+            if lang == "ru":
+                print("Извините, но я вас не слышу.")
+            else:
+                print("Sorry, but I can't hear you.")
 
     return said
 
@@ -42,7 +51,11 @@ def note(text):
         with open(file_name, "w") as f:
             f.write(text)
 
-speak("How can I help you?")
+if lang == "ru":
+    speak("Чем я могу вам помочь?")
+
+else:
+    speak("How can I help you?")
 
 while True:        
 
