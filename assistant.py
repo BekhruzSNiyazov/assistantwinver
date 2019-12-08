@@ -46,7 +46,7 @@ speak("How can I help you?")
 
 while True:        
 
-    text = get_audio()
+    text = get_audio().lower()
 
     if lang == "en":
             
