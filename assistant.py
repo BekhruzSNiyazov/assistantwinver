@@ -11,8 +11,11 @@ jokes = ["Why did the hipster burn his mouth on his coffee? Because he drank it 
 
 def speak(text):
     tts = gTTS(text=text, lang="en")
-    playsound(tts)
+    file = "voice.mp3"
+    tts.save(file)
+    playsound(file)
     print(f"\nAssistant: {text}\n")
+    remove(file)
 
 def get_audio():
     r = sr.Recognizer()
