@@ -72,9 +72,17 @@ while True:
             text = "".join(text)
             translations = translator.translate(text, dest="ru")
             print(translations.text)
+        
+        elif "remember" in text:
+            speak("What do I need to remember?")
+            global info
+            info = get_audio()
+
+        elif "you" in text and "remember" in text:
+            speak(info)
 
         elif "goodbye" in text:
-                speak("Goodbye to you to! Say stop to stop.")
+            speak("Goodbye to you to! Say stop to stop.")
 
         elif "stop" in text:
             break
