@@ -8,9 +8,9 @@ from datetime import datetime
 from googletrans import Translator
 from random import randrange
 
- jokes = ["Why did the hipster burn his mouth on his coffee? Because he drank it before it was cool.", "What is the difference between a well-dressed man on a unicycle and a poorly dressed man on a bicycle? Attire."]
+jokes = ["Why did the hipster burn his mouth on his coffee? Because he drank it before it was cool.", "What is the difference between a well-dressed man on a unicycle and a poorly dressed man on a bicycle? Attire."]
 
- def speak(text):
+def speak(text):
     tts = gTTS(text=text, lang="en")
     filename = "voice.mp3"
     tts.save(filename)
@@ -18,7 +18,7 @@ from random import randrange
     playsound(filename)
     remove(filename)
 
- def get_audio():
+def get_audio():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         audio = r.listen(source)
@@ -32,16 +32,16 @@ from random import randrange
 
      return said
 
- def note(text):
+def note(text):
         date = datetime.now()
         file_name = str(date).replace(":", "-") + "-note.txt"
         Popen(["notepad.exe", file_name])
         with open(file_name, "w") as f:
             f.write(text)
 
- speak("How can I help you?")
+speak("How can I help you?")
 
- while True:        
+while True:        
 
      text = get_audio()
 
@@ -65,7 +65,7 @@ from random import randrange
 
      elif "what is your name" in text:
         speak("My name is Assistant")
-    elif "thank you" in text:
+     elif "thank you" in text:
         speak("You are welcome!")
 
      elif "how are you" in text:
