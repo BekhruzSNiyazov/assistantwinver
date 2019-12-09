@@ -6,32 +6,38 @@ from subprocess import Popen
 from datetime import datetime
 from googletrans import Translator
 from random import randrange
-from datetime import datetime
+from os import remove
 
 jokes = ["Why did the hipster burn his mouth on his coffee? Because he drank it before it was cool.", "What is the difference between a well-dressed man on a unicycle and a poorly dressed man on a bicycle? Attire."]
 
 rujokes = ["- Запомни, умный человек всегда во всём сомневается.\nТолько дурак может быть полностью уверенным в чём-то.\n- Ты уверен в этом?\n- Абсолютно.", "— Скажите, какова ваша методика написания диплома?\n— Crtl C, Ctrl V!",
 "Утром мать спрашивает дочь:\n- Что ночью упало с таким грохотом?\n- Одежда\n- А почему так громко?\n- Я не успела из нее вылезти...", "На чемпионате мира по плаванию тройку лидеров замкнул электрик Петров."]
 
-lang = input("Print your language here (en/ru): ")
+lang = ""
+
+try:
+    f = open("info.txt", "r")
+    lang = f.read()
+except:
+    lang = input("Print your language here (en/ru): ")
+    f = open("info.txt", "w")
+    f.write(lang)
 
 def speak(text):
     filename = "voice.mp3"
     if lang == "ru":
         tts = gTTS(text=text, lang="ru")
-        try:
-            tts.save(filename)
-        except:
-            print("faild to build the audio")
+        tts.save(filename)
         print(f"\nАссистент: {text}\n")
+        playsound(filename)
+        remove(filename)
+
     else:
         tts = gTTS(text=text, lang="en")
-        try:
-            tts.save(filename)
-        except:
-            print("faild to build the audio")
+        tts.save(filename)
         print(f"\nAssistant: {text}\n")
-    playsound(filename)
+        playsound(filename)
+        remove(filename)
 
 def get_audio():
     r = sr.Recognizer()
@@ -72,7 +78,7 @@ while True:
 
     if lang == "en":
             
-        if "Russian" in text:
+        if "russian" in text:
             translator = Translator()
             text = text.split()
             text.remove("in")
@@ -127,7 +133,7 @@ while True:
             text = text.split()
             speak(f"{text[0]} / {text[-1]} = {text[0] / text[-1]}")   
             
-        elif "set" and "timer" in text:
+        elif "timer" in text:
             speak("Please, write the number of seconds to set the timer.")
             t = int(input())
             speak("Started!")
@@ -146,16 +152,22 @@ while True:
         elif text == None:
             sleep(1)
 
-        elif "tell" in text and "joke" in text:
+        elif "joke" in text:
             speak(jokes[randrange(len(jokes))])
 
-        elif "what" in text and "time" in text:
+        elif "time" in text:
             speak(datetime.now())
 
-        elif 'date' in text:
-            import datetime 
+        elif "date" in text:
             print(datetime.date.today())
-     
+
+        elif "say" in text or "speak" in text:
+            words = input('Please, write what I have to say.')
+            speak(words)
+
+        elif "open" in text:
+            Popen([f"{text.split()[-1]}.exe", ""])
+
         else:
             speak("Sorry, I didn't understand you. ")
 
@@ -164,10 +176,9 @@ while True:
     elif lang == "ru":
         try:
             if "кто ты" in text or "что ты умеешь" in text or "кто тебя создал" in text:
-                speak("Я ассистент созданный Ниязовом Бехрузом и Петром Репьевым в декабре 2019. Я могу говорить время и дату, шутить,\n делать заметки и много другого")
+                speak("Я ассистент созданный Ниязовом Бехрузом и Петром Репьевым. Я могу говорить время и дату, шутить, делать заметки и многое другого")
 
-            elif 'дата' in text:
-                import datetime 
+            elif 'дата' in text: 
                 print(datetime.date.today())
 
             elif "пока" in text or "до свидания" in text or "прощай" in text:
@@ -182,8 +193,69 @@ while True:
             elif "шутка" in text or "шутку" in text or "пошути" in text:
                 speak(rujokes[randrange(len(rujokes))])
 
+            elif "таймер" in text:
+                speak("Пожалуйста, напишите количество секунд на которое поставить таймер.")
+                tr = int(input())
+                speak("Установлено!")
+                sleep(tr)
+                speak("Время истекло!")
+
+            elif "сделай заметку" in text or "напиши это" in text or "запомни это" in text:
+                speak("Что мне нужно запомнить?")
+                note_text = get_audio()
+                note(note_text)
+                speak("Я это записал.")
+
+            elif text == None:
+                sleep(1)
+
+            elif "запомни" in text:
+                speak("Что я должен запомнить?")
+                global info2
+                info2 = get_audio()
+
+            elif "ты" in text or "вы" in text and "запомнил" in text or "запомнила" in text:
+                speak(info)
+
+            elif "привет" in text:
+                speak("Тебе привет тоже!")
+
+            elif "как тебя зовут" in text:
+                speak("Меня зовут ...")
+
+            elif "спасибо" in text:
+                speak("Не за что!")
+
+            elif "как ты" in text:
+                speak("Хорошо, спасибо!")
+
+            elif "случайное число" in text:
+                i2 = randrange(100)
+                speak(i2)
+
+            elif "произнеси" in text or "скажи" in text:
+                words = input('Пожалуйста, напишите, что мне надо произнести.')
+                say(words)
+
+            elif "+" in text:
+                text = text.split()
+                speak(f"{text[0]} + {text[-1]} = {text[0] + text[-1]}")
+
+            elif "-" in text:
+                text = text.split()
+                speak(f"{text[0]} - {text[-1]} = {text[0] - text[-1]}")
+
+            elif "*" in text:
+                text = text.split()
+                speak(f"{text[0]} * {text[-1]} = {text[0] * text[-1]}")
+            
+            elif "/" in text:
+                text = text.split()
+                speak(f"{text[0]} / {text[-1]} = {text[0] / text[-1]}")
+
             else:
                 speak("Извините, но я этого еще не умею!")
+
         except:
             speak("Извините, но я не могу сейчас выполнить эту команду, повторите попозже.")
 
