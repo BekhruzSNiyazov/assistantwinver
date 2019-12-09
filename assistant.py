@@ -271,4 +271,4 @@ while True:
             speak("Извините, но я не могу сейчас выполнить эту команду, повторите попозже.")
 
     else:
-        speak("Sorry, but I don't know that language yet! Извините, но я ещё не знаю этого языка!")
+        speak("Sorry, but I don't know that language yet! I'll talk in English instead!")
