@@ -13,6 +13,10 @@ jokes = ["Why did the hipster burn his mouth on his coffee? Because he drank it 
 rujokes = ["- Запомни, умный человек всегда во всём сомневается.\nТолько дурак может быть полностью уверенным в чём-то.\n- Ты уверен в этом?\n- Абсолютно.", "— Скажите, какова ваша методика написания диплома?\n— Crtl C, Ctrl V!",
 "Утром мать спрашивает дочь:\n- Что ночью упало с таким грохотом?\n- Одежда\n- А почему так громко?\n- Я не успела из нее вылезти...", "На чемпионате мира по плаванию тройку лидеров замкнул электрик Петров."]
 
+hello = ["Hello to you to!", "Hi!", "Hi, how can I help you?", "Hello, how can I help you?", "Hi! How are you?", "How can I help you?", "How can I help?"]
+
+goodbye = ["Goodbye to you to!", "See you later!", "Hope, I'll see you again!", "Waiting for help!"]
+
 lang = ""
 
 try:
@@ -96,13 +100,20 @@ while True:
             speak(info)
 
         elif "goodbye" in text:
-            speak("Goodbye to you to! Say stop to stop.")
+            speak(goodbye[randrange(len(goodbye))])
 
         elif "stop" in text:
             break
 
+        elif "change" in text and "language" in text:
+            speak("Which language whould you like to use?")
+            lang = input("Plaese, type the language here (en/ru): ")
+            f = open("info.txt", "w")
+            f.write(lang)
+            speak("Successfully changed!")
+
         elif "hello" in text:
-            speak("Hello to you to!")
+            speak(hello[randrange(len(hello))])
 
         elif "what is your name" in text:
             speak("My name is Assistant")
