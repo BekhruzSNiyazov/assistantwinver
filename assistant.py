@@ -1,6 +1,5 @@
-from time import sleep
+from time import sleep, ctime
 from subprocess import Popen
-from datetime import datetime
 from random import randrange
 from os import remove
 
@@ -8,7 +7,7 @@ jokes = ["Why did the hipster burn his mouth on his coffee? Because he drank it 
 rujokes = ["- Запомни, умный человек всегда во всём сомневается.\nТолько дурак может быть полностью уверенным в чём-то.\n- Ты уверен в этом?\n- Абсолютно.", "— Скажите, какова ваша методика написания диплома?\n— Crtl C, Ctrl V!", "Утром мать спрашивает дочь:\n- Что ночью упало с таким грохотом?\n- Одежда\n- А почему так громко?\n- Я не успела из нее вылезти...", "На чемпионате мира по плаванию тройку лидеров замкнул электрик Петров."]
 hello = ["Hello to you to!", "Hi!", "Hi, how can I help you?", "Hello, how can I help you?", "Hi! How are you?", "How can I help you?", "How can I help?"]
 goodbye = ["Goodbye to you to!", "See you later!", "Hope, I'll see you again!", "Waiting for help!"]
-sorry = ["Sorry, I can't do that yet!", "Sorry, but I don't understand that!", "Sorry, I can't do that, please, try another command"]
+sorry = ["Sorry, I can't do that yet!", "Sorry, but I don't understand that!", "Sorry, I can't do that yet! Please, try another command."]
 feeling = ["I'm fine, thank you!", "Very well, thanks!", "Very good, tank you! And you?"]
 bad = [f"Why are you so {feeling}?", "What's wrong?", "What can I do for you?", "If you want to, I can make you laugh. Just say: \"Make me laugh.\""]
 thanks = ["Glad you like it.", "You are welcome."]
@@ -31,7 +30,7 @@ def get_audio():
     return input()
 
 def note(text):
-        date = datetime.now()
+        date = ctime()
         file_name = str(date).replace(":", "-") + "-note.txt"
         Popen(["notepad.exe", file_name])
         with open(file_name, "w") as f:
@@ -138,10 +137,10 @@ while True:
             speak(jokes[randrange(len(jokes))])
 
         elif "time" in text:
-            speak(datetime.now())
+            speak(ctime())
 
         elif "date" in text:
-            print(datetime.date.today())
+            print(ctime())
 
         elif "say" in text or "speak" in text:
             words = input('Please, write what I have to say.')
@@ -151,7 +150,7 @@ while True:
             Popen([f"{text.split()[-1]}.exe", ""])
 
         else:
-            speak(sorry[randrange(len(sorry))]))
+            speak(sorry[randrange(len(sorry))])
 
         sleep(1)
 
@@ -160,8 +159,8 @@ while True:
             if "кто ты" in text or "что ты умеешь" in text or "кто тебя создал" in text:
                 speak("Я ассистент созданный Ниязовом Бехрузом и Петром Репьевым. Я могу говорить время и дату, шутить, делать заметки и многое другого")
 
-            elif 'дата' in text: 
-                print(datetime.date.today())
+            elif "дата" in text: 
+                print(ctime())
 
             elif "пока" in text or "до свидания" in text or "прощай" in text:
                     speak("Пока! Скажите стоп, чтоб прекратить работу.")
@@ -170,7 +169,7 @@ while True:
                 break
 
             elif "время" in text or "времени" in text:
-                speak(datetime.now())
+                speak(ctime())
 
             elif "шутка" in text or "шутку" in text or "пошути" in text:
                 speak(rujokes[randrange(len(rujokes))])
