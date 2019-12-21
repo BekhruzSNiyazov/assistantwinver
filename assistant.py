@@ -1,21 +1,18 @@
 from time import sleep
-from playsound import playsound
-import speech_recognition as sr
-from gtts import gTTS
 from subprocess import Popen
 from datetime import datetime
-from googletrans import Translator
 from random import randrange
 from os import remove
 
 jokes = ["Why did the hipster burn his mouth on his coffee? Because he drank it before it was cool.", "What is the difference between a well-dressed man on a unicycle and a poorly dressed man on a bicycle? Attire."]
-
-rujokes = ["- Запомни, умный человек всегда во всём сомневается.\nТолько дурак может быть полностью уверенным в чём-то.\n- Ты уверен в этом?\n- Абсолютно.", "— Скажите, какова ваша методика написания диплома?\n— Crtl C, Ctrl V!",
-"Утром мать спрашивает дочь:\n- Что ночью упало с таким грохотом?\n- Одежда\n- А почему так громко?\n- Я не успела из нее вылезти...", "На чемпионате мира по плаванию тройку лидеров замкнул электрик Петров."]
-
+rujokes = ["- Запомни, умный человек всегда во всём сомневается.\nТолько дурак может быть полностью уверенным в чём-то.\n- Ты уверен в этом?\n- Абсолютно.", "— Скажите, какова ваша методика написания диплома?\n— Crtl C, Ctrl V!", "Утром мать спрашивает дочь:\n- Что ночью упало с таким грохотом?\n- Одежда\n- А почему так громко?\n- Я не успела из нее вылезти...", "На чемпионате мира по плаванию тройку лидеров замкнул электрик Петров."]
 hello = ["Hello to you to!", "Hi!", "Hi, how can I help you?", "Hello, how can I help you?", "Hi! How are you?", "How can I help you?", "How can I help?"]
-
 goodbye = ["Goodbye to you to!", "See you later!", "Hope, I'll see you again!", "Waiting for help!"]
+sorry = ["Sorry, I can't do that yet!", "Sorry, but I don't understand that!", "Sorry, I can't do that, please, try another command"]
+feeling = ["I'm fine, thank you!", "Very well, thanks!", "Very good, tank you! And you?"]
+bad = [f"Why are you so {feeling}?", "What's wrong?", "What can I do for you?", "If you want to, I can make you laugh. Just say: \"Make me laugh.\""]
+thanks = ["Glad you like it.", "You are welcome."]
+
 
 lang = ""
 
@@ -28,40 +25,10 @@ except:
     f.write(lang)
 
 def speak(text):
-    filename = "voice.mp3"
-    if lang == "ru":
-        tts = gTTS(text=text, lang="ru")
-        tts.save(filename)
-        print(f"\nАссистент: {text}\n")
-        playsound(filename)
-        remove(filename)
-
-    else:
-        tts = gTTS(text=text, lang="en")
-        tts.save(filename)
-        print(f"\nAssistant: {text}\n")
-        playsound(filename)
-        remove(filename)
+    print(text)
 
 def get_audio():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        audio = r.listen(source)
-        said = ""
-
-        try:
-            said = r.recognize_google(audio, language=lang)
-            if lang == "ru":
-                print(f"Вы: {said}")
-            else:
-                print(f"You: {said}")
-        except:
-            if lang == "ru":
-                print("Извините, но я вас не слышу.")
-            else:
-                print("Sorry, but I can't hear you.")
-
-    return said
+    return input()
 
 def note(text):
         date = datetime.now()
@@ -81,17 +48,7 @@ while True:
     text = get_audio().lower()
 
     if lang == "en":
-            
-        if "russian" in text:
-            translator = Translator()
-            text = text.split()
-            text.remove("in")
-            text.remove("russian")
-            text = "".join(text)
-            translations = translator.translate(text, dest="ru")
-            print(translations.text)
-        
-        elif "remember" in text:
+        if "remember" in text:
             speak("What do I need to remember?")
             global info
             info = get_audio()
@@ -104,6 +61,9 @@ while True:
 
         elif "stop" in text:
             break
+
+        elif "ha" in text or "thank you" in text or "thanks" in text:
+            speak(thanks[randrange(len(thanks))])
 
         elif "change" in text and "language" in text:
             speak("Which language whould you like to use?")
@@ -121,8 +81,16 @@ while True:
             speak("You are welcome!")
 
         elif "how are you" in text:
-            speak("I'm fine, thank you!")
+            speak(feeling[randrange(len(feeling))])
 
+        elif "i am" in text:
+            feeling = ""
+            if "bad" in text or "angry" in text:
+                if "bad" in text:
+                    feeling = "bad"
+                else:
+                    feeling = "angry"
+                speak(bad[randrange(len(bad))])
 
         elif "random number generator" in text:
             i = randrange(100)
@@ -157,13 +125,16 @@ while True:
         elif "make a note" in text or "write this down" in text or "remember this" in text:
             speak("What would you like to write down?")
             note_text = get_audio()
-            note(note_text)
-            speak("I've made a note of that.")
+            try:
+                note(note_text)
+                speak("I've made a note of that.")
+            except:
+                speak(sorry[randrange(len(sorry))])
 
         elif text == None:
             sleep(1)
 
-        elif "joke" in text:
+        elif "joke" in text or "laugh" in text:
             speak(jokes[randrange(len(jokes))])
 
         elif "time" in text:
@@ -180,7 +151,7 @@ while True:
             Popen([f"{text.split()[-1]}.exe", ""])
 
         else:
-            speak("Sorry, I didn't understand you. ")
+            speak(sorry[randrange(len(sorry))]))
 
         sleep(1)
 
