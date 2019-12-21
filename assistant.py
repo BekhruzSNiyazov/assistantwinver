@@ -175,7 +175,7 @@ while True:
                 speak(rujokes[randrange(len(rujokes))])
 
             elif "таймер" in text:
-                speak("Пожалуйста, напишите количество секунд на которое поставить таймер.")
+                speak("Пожалуйста, укажите количество секунд на которое поставить надо таймер.")
                 tr = int(input())
                 speak("Установлено!")
                 sleep(tr)
